@@ -21,4 +21,3 @@ urlpatterns = [
     path('steam/', include('steam.urls')),
     path('', include('second.urls')),
 ]
-
