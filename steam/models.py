@@ -21,4 +21,4 @@ class Account(models.Model):
     coast = models.FloatField()
     description = models.TextField(null=True, blank=True)
     game = models.ManyToManyField(Game)
-    mail = models.ForeignKey(Mail, models.CASCADE)
+    mail = models.ForeignKey(Mail, models.CASCADE) 
