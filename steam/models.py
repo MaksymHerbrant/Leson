@@ -27,6 +27,13 @@ class Account(models.Model):
     description = models.TextField(null=True, blank=True)
     game = models.ManyToManyField(Game)
     mail = models.ForeignKey(Mail, models.CASCADE)
-    
 
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        sum = 0
+        for game in self.game.all():
+            print(game.coast)
+            sum = sum + game.coast
+        self.coast = sum
+        super().save(*args, **kwargs)
