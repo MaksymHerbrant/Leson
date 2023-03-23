@@ -21,10 +21,16 @@ def snippets_list(request):
             return JsonResponse(serializer.data, status=200)
         return JsonResponse(serializer.errors, status=400)
 
+@csrf_exempt
 def styles_list(request):
     if request.method == "GET":
         return JsonResponse(STYLES_CHOICES, status=200, safe=False)
-    
+    else:
+        return HttpResponse('invalid method')
+
+@csrf_exempt   
 def language_list(request):
     if request.method == "GET":
         return JsonResponse(LANGUAGE_CHOICES, status=200, safe=False)
+    else:
+        return HttpResponse('invalid method')
