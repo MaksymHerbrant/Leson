@@ -6,7 +6,6 @@ LEXERS = [item for item in get_all_lexers() if item[1]]
 
 lexers = []
 for item in get_all_lexers():
-    print(item)
     if item[1]:
         lexers.append(item)
 
