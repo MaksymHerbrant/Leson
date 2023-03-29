@@ -5,7 +5,8 @@ from rest_framework.parsers import JSONParser
 from snippets.models import Snippet
 from snippets.serializers import SnippetSerializer
 from snippets.models import STYLES_CHOICES, LANGUAGE_CHOICES
-
+from rest_framework import status
+from rest_framework.response import Response
 # Create your views here.
 @csrf_exempt
 def snippets_list(request):
@@ -20,6 +21,26 @@ def snippets_list(request):
             serializer.save()
             return JsonResponse(serializer.data, status=200)
         return JsonResponse(serializer.errors, status=400)
+    
+@csrf_exempt
+def snipet_detail(request, pk):
+    try:
+        snippet = Snippet.objects.get(id=pk)
+    except Snippet.DoesNotExist:
+        return JsonResponse("DoesNotExist", status=status.HTTP_404_NOT_FOUND)
+    if request.method == "GET":
+        serializer = SnippetSerializer(snippet)
+        return JsonResponse(serializer.data, status=status.HTTP_200_OK)
+    elif request.method == "PUT":
+        serializer = SnippetSerializer(snippet, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=status.HTTP_200_OK)
+        return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == "DELETE":
+        snippet.delete()
+        return JsonResponse(status=status.HTTP_204_NO_CONTENT)
+
 
 @csrf_exempt
 def styles_list(request):
@@ -34,3 +55,4 @@ def language_list(request):
         return JsonResponse(LANGUAGE_CHOICES, status=200, safe=False)
     else:
         return HttpResponse('invalid method')
+
